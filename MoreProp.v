@@ -293,6 +293,20 @@ Definition between (n m o: nat) : Prop :=
 
 Definition teen : nat->Prop := between 13 19.
 
+Theorem teen_17 :
+  teen 17.
+Proof. reflexivity. Qed.
+
+Theorem teen_less_20 : 
+  forall (n : nat),
+    (teen n) -> (ble_nat n 20) = true.
+Proof.
+  intros n.
+  intros H.
+
+  (* I'm not sure how to do this! *)
+Admitted.
+
 (** We can even pass propositions -- including parameterized
     propositions -- as arguments to functions: *)
 

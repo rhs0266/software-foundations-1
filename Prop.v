@@ -17,6 +17,8 @@ Require Export MoreCoq.
 *)
 
 
+(** Material covered at OPLSS proper starts here. *)
+
 (* ##################################################### *)
 (** * Inductively Defined Propositions *)
 
@@ -89,8 +91,11 @@ Require Export MoreCoq.
 (** **** Exercise: 1 star (varieties_of_beauty) *)
 (** How many different ways are there to show that [8] is [beautiful]? *)
 
-(* FILL IN HERE *)
-(** [] *)
+(** Infinitely many, because we can just keep adding 0: 0 + (3 + 5) is
+    beautiful (0 + 0) + (3 + 5) is beautiful; etc. *)
+
+(** Is it possible to prove this sort of metaproperty in Coq?  Can I
+    prove that there are infinite proofs of the beauty of 8? *)
 
 (** In Coq, we can express the definition of [beautiful] as
     follows: *)
@@ -142,7 +147,18 @@ Proof.
   apply eight_is_beautiful.
   apply B.
 Qed.
-  
+
+(** Here, B is just a name; we could have used some other name as
+    well. Moreover, here's another proof of the same theorem, where we
+    don't have to provide (m:=n): *)
+
+Theorem beautiful_plus_eight_2: forall n, beautiful n -> beautiful (8+n).
+Proof.
+  intros n B.
+  apply b_sum with (n:=8). (* Here n is bound in b_sum, not in this proof! *)
+  apply eight_is_beautiful.
+  apply B.
+Qed.
 
 (** **** Exercise: 2 stars (b_timesm) *)
 Theorem b_timesm: forall n m, beautiful n -> beautiful (m*n).
@@ -160,8 +176,10 @@ Proof.
 (** The fact that we introduced [beautiful] with an [Inductive]
     declaration tells Coq not only that the constructors [b_0], [b_3],
     [b_5] and [b_sum] are ways to build evidence, but also that these
-    two constructors are the _only_ ways to build evidence that
+    four constructors are the _only_ ways to build evidence that
     numbers are beautiful. *)
+
+(** Was that a typo in the previous para? *)
 
 (** In other words, if someone gives us evidence [E] for the assertion
     [beautiful n], then we know that [E] must have one of four shapes:
@@ -437,6 +455,14 @@ Proof.
   intros n E. 
   inversion E as [| n' E']. 
   apply E'. Qed.
+
+(** Why do you only get one case here -- only the inductive case, and
+    not the base case?  According to Tolmach, it's because Coq is
+    smart enough to know that the ev_0 constructor couldn't possibly
+    have been used to build ev (S (S n)), because they don't unify.
+    So, the case that we don't care about gets thrown away.  (If we
+    had been doing this proof on paper, we'd have just written
+    something like "Can't happen" for that case.) *)
 
 (** These uses of [inversion] may seem a bit mysterious at first.
     Until now, we've only used [inversion] on equality
