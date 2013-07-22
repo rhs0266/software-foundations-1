@@ -1,6 +1,6 @@
 (** * LibTactics: A Collection of Handy General-Purpose Tactics *)
 
-(* $Date: 2010-10-14 12:27:18 -0400 (Thu, 14 Oct 2010) $ *)
+(* $Date: 2013-01-16 22:29:57 -0500 (Wed, 16 Jan 2013) $ *)
 (* Chapter maintained by Arthur Chargueraud *)
 
 (** This file contains a set of tactics that extends the set of builtin
@@ -404,7 +404,7 @@ Ltac fast_rm_inside E :=
     In order for tactics to convert their arguments into natural numbers, 
     we provide a conversion tactic. *)
  
-Require Coq.NArith.BinPos Coq.ZArith.BinInt.
+Require BinPos Coq.ZArith.BinInt.
 
 Definition ltac_nat_from_int (x:BinInt.Z) : nat :=
   match x with
