@@ -137,13 +137,13 @@ Qed.
 
 Theorem eight_is_beautiful'': beautiful 8.
 Proof.
-   Show Proof.
+   Show Proof.  (* I got nothin' yet. *)
    apply b_sum with (n:=3) (m:=5).
-   Show Proof.
+   Show Proof.  (* I have part of a proof term, with two holes. *)
    apply b_3.
-   Show Proof.
+   Show Proof.  (* I've filled one hole. *)
    apply b_5.
-   Show Proof.
+   Show Proof.  (* Done! *)
 Qed.
 
 (** At any given moment, Coq has constructed a term with some
@@ -161,6 +161,9 @@ Qed.
     evidence by hand, as shown above. Then we can use [Definition] 
     (rather than [Theorem]) to give a global name directly to a 
     piece of evidence. *)
+
+(** And I could have just flat-out *written* the proof term myself,
+    too. *)
 
 Definition eight_is_beautiful''' : beautiful 8 :=
   b_sum 3 5 b_3 b_5.
@@ -183,11 +186,13 @@ Print eight_is_beautiful'''.
 Theorem six_is_beautiful :
   beautiful 6.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply b_sum with (n:=3) (m:=3).
+  apply b_3.
+  apply b_3.
+Qed.
 
 Definition six_is_beautiful' : beautiful 6 :=
-  (* FILL IN HERE *) admit.
-(** [] *)
+  b_sum 3 3 b_3 b_3.
 
 (** **** Exercise: 1 star (nine_is_beautiful) *)
 (** Give a tactic proof and a proof object showing that [9] is [beautiful]. *)
@@ -195,12 +200,13 @@ Definition six_is_beautiful' : beautiful 6 :=
 Theorem nine_is_beautiful :
   beautiful 9.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply b_sum with (n:=3).
+  apply b_3.
+  apply six_is_beautiful.
+Qed.
 
 Definition nine_is_beautiful' : beautiful 9 :=
-  (* FILL IN HERE *) admit.
-(** [] *)
-
+  b_sum 3 6 b_3 six_is_beautiful.
 
 (* ##################################################### *)
 (** ** Quantification, Implications and Functions *)

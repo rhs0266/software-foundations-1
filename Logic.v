@@ -356,6 +356,9 @@ Proof.
   intros contra.
   inversion contra.  Qed. 
 
+(** `contra` doesn't mean anything special here; it's just a name for
+    what's on the left side of a `->`. *)
+
 (** How does this work? The [inversion] tactic breaks [contra] into
     each of its possible cases, and yields a subgoal for each case.
     As [contra] is evidence for [False], it has _no_ possible cases,
@@ -463,8 +466,15 @@ Proof.
 Theorem contrapositive : forall P Q : Prop,
   (P -> Q) -> (~Q -> ~P).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros P Q H.
+  unfold not.
+  intros QF P2.
+  apply H in P2.
+  apply QF in P2.
+  apply P2.
+Qed.
+
+(** That might not have been the cleanest way, but it works. *)
 
 (** **** Exercise: 1 star (not_both_true_and_false) *)
 Theorem not_both_true_and_false : forall P : Prop,
@@ -510,6 +520,12 @@ Proof.
   (* But now what? There is no way to "invent" evidence for [~P] 
      from evidence for [P]. *) 
   Abort.
+
+(** Something we *can* show in Coq, though! *)
+Theorem excluded_middle_not_inconsistent :
+  forall (P: Prop), ~ ~(P \/ ~ P).
+Admitted.
+(** This one's doable, but tricky. *)
 
 (** **** Exercise: 5 stars, advanced, optional (classical_axioms) *)
 (** For those who like a challenge, here is an exercise
@@ -742,8 +758,11 @@ Notation "x = y" := (eq x y)
 Lemma leibniz_equality : forall (X : Type) (x y: X), 
  x = y -> forall P : X -> Prop, P x -> P y.
 Proof.
-(* FILL IN HERE *) Admitted.
-(** [] *)
+  intros X x y xeqy P.
+  inversion xeqy.
+  intros Py.
+  apply Py.
+Qed.
 
 (** We can use
     [refl_equal] to construct evidence that, for example, [2 = 2].
@@ -798,6 +817,9 @@ The only difference is that values of [sumbool] are declared to be in
 that allows us to compute with them.) *) 
 
 (** Here's how we can define a [sumbool] for equality on [nat]s *)
+
+(** This is OK because we're dealing with nats.  A lot of types have
+    decidable equality, but we couldn't do this with Prop. *)
 
 Theorem eq_nat_dec : forall n m : nat, {n = m} + {n <> m}.
 Proof.
