@@ -19,6 +19,8 @@
      END
 *)
 
+(** Factorial! *)
+
 (** This chapter looks at how to define the _syntax_ and _semantics_
     of Imp; the chapters that follow develop a theory of _program
     equivalence_ and introduce _Hoare Logic_, a widely used logic for
@@ -126,6 +128,13 @@ Inductive bexp : Type :=
     informal ones for communicating between humans and formal ones for
     carrying out implementations and proofs. *)
 
+(* The bit about "Some additional information -- and human
+   intelligence -- would be required to turn this description into a
+   formal definition (when implementing a compiler, for example)"
+   rings true for me -- I better understood just how informal BNF was
+   when I tried writing a grammar file for the Happy parser generator
+   recently.  *)
+
 (* ####################################################### *)
 (** ** Evaluation *)
 
@@ -214,6 +223,10 @@ Proof.
     simpl. rewrite IHa1. rewrite IHa2. reflexivity.
   Case "AMult".
     simpl. rewrite IHa1. rewrite IHa2. reflexivity.  Qed.
+
+(* The reason why the AMinus and AMult cases have nothing to them is
+   because optimize_0plus doesn't do anything interesting except in
+   the case of APlus. *)
 
 (* ####################################################### *)
 (** * Coq Automation *)
