@@ -479,12 +479,16 @@ Fixpoint exp (base power : nat) : nat :=
     Translate this into Coq. *)
 
 Fixpoint factorial (n:nat) : nat := 
-(* FILL IN HERE *) admit.
+  match n with
+      | O => S O
+      | S p => mult n (factorial p)
+  end.
 
 Example test_factorial1:          (factorial 3) = 6.
-(* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
+
 Example test_factorial2:          (factorial 5) = (mult 10 12).
-(* FILL IN HERE *) Admitted.
+Proof. reflexivity. Qed.
 (** [] *)
 
 (** We can make numerical expressions a little easier to read and
@@ -701,7 +705,13 @@ Proof.
 Theorem plus_id_exercise : forall n m o : nat,
   n = m -> m = o -> n + m = m + o.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m o.
+  intros neqm.
+  intros meqo.
+  rewrite -> neqm.
+  rewrite -> meqo.
+  reflexivity.
+Qed.
 (** [] *)
 
 (** As we've seen in earlier examples, the [Admitted] command
@@ -817,7 +827,11 @@ Proof.
 Theorem zero_nbeq_plus_1 : forall n : nat,
   beq_nat 0 (n + 1) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n.
+  destruct n.
+  simpl. reflexivity.
+  simpl. reflexivity.
+Qed.
 (** [] *)
 
 (* ###################################################################### *)
@@ -832,24 +846,82 @@ Theorem identity_fn_applied_twice :
   (forall (x : bool), f x = x) ->
   forall (b : bool), f (f b) = b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros f.
+  intros forallx.
+  destruct b.
+  rewrite -> forallx.
+  rewrite -> forallx.
+  reflexivity.
+  rewrite -> forallx.
+  rewrite -> forallx.
+  reflexivity.
+Qed.
 
 (** Now state and prove a theorem [negation_fn_applied_twice] similar
     to the previous one but where the second hypothesis says that the
     function [f] has the property that [f x = negb x].*)
 
-(* FILL IN HERE *)
+Theorem negation_fn_applied_twice : 
+  forall (f : bool -> bool), 
+  (forall (x : bool), f x = negb x) ->
+  forall (b : bool), f (f b) = b.
+Proof.
+  intros f.
+  intros forallx.
+  destruct b.
+  rewrite -> forallx.
+  rewrite -> forallx.
+  simpl.
+  reflexivity.
+  rewrite -> forallx.
+  rewrite -> forallx.
+  simpl.
+  reflexivity.
+Qed.
 
 (** **** Exercise: 2 stars (andb_eq_orb) *)
 (** Prove the following theorem.  (You may want to first prove a
     subsidiary lemma or two.) *)
+
+Theorem andb_implies_orb :
+  forall (b c : bool),
+    andb b c = true -> orb b c = true.
+Proof.
+  intros b c.
+  intros H.
+  destruct b.
+  destruct c.
+  (* b = true, c = true *)
+  simpl. reflexivity.
+  (* b = true, c = false *)
+  simpl. reflexivity.
+  (* b = false ... *)
+  destruct c.
+  (* b = false, c = true *)
+  simpl. reflexivity.
+  (* b = false, c = false *)
+  destruct H.
+  simpl. reflexivity.
+Qed.
 
 Theorem andb_eq_orb : 
   forall (b c : bool),
   (andb b c = orb b c) ->
   b = c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c.
+  destruct b.
+  destruct c.
+  (* b = true, c = true *)
+  simpl. reflexivity.
+  (* b = true, c = false *)
+  simpl. intros H. rewrite -> H. reflexivity.
+  (* b = false, c = whatever *)
+  simpl. intros H. rewrite -> H. reflexivity.
+Qed.
+
+(* I didn't actually end up using the subsidiary lemma I defined -- I
+   wonder what was the indended solution. *)
 
 (** **** Exercise: 3 stars (binary) *)
 (** Consider a different, more efficient representation of natural
