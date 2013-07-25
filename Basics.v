@@ -1076,7 +1076,24 @@ Fixpoint plus' (n : nat) (m : nat) : nat :=
     _does_ terminate on all inputs, but that Coq will _not_ accept
     because of this restriction. *)
 
-(* FILL IN HERE *)
+(**
+Fixpoint plus'' (n : nat) (m : nat) : nat :=
+  match n with
+    | O => m
+    | S n' => match m with
+                | O => S (plus'' n' m)
+                | S m' => S (plus'' n m')
+              end
+  end.
+*)
+
+(* Well, this is a little contrived, but I think it's an example of
+   what the exercise is looking for.  If n = S n' and m = S m' --
+   which is the case in the second nested match case -- then you
+   should be able to add them together by taking the successor of n +
+   m'; furthermore, this should terminate because we are checking for
+   the case where m = O. *)
+
 (** [] *)
 
 (* $Date: 2013-07-17 16:19:11 -0400 (Wed, 17 Jul 2013) $ *)
