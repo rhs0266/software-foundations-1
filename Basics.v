@@ -958,7 +958,59 @@ Qed.
         converting it to unary and then incrementing. 
 *)
 
-(* FILL IN HERE *)
+Inductive bin_nat : Type :=
+  | Zero : bin_nat
+  | Double : bin_nat -> bin_nat
+  | DoublePlusOne : bin_nat -> bin_nat.
+
+Check Double(Zero).
+Check DoublePlusOne(Double(Zero)).
+Check Double.
+
+Fixpoint inc_bin_nat (n : bin_nat) : bin_nat :=
+  match n with
+  | Zero => DoublePlusOne(Zero)
+  | Double(n') => DoublePlusOne(n')
+  | DoublePlusOne(n') => Double(inc_bin_nat n')
+  end.
+
+(* How do you increment 2n + 1 if you know n?
+   Well, you want 2n + 2.
+
+   Suppose you can only induct on n -- Coq requires this.
+
+   2(n + 1) = 2n + 2.  So get n + 1 and double it! *)
+
+Eval compute in (inc_bin_nat (DoublePlusOne(DoublePlusOne(DoublePlusOne(Zero))))).
+
+Fixpoint binary_to_unary (n : bin_nat) : nat :=
+  match n with
+  | Zero => O
+  | Double(n') => plus (binary_to_unary n') (binary_to_unary n') 
+  | DoublePlusOne(n') => plus (S(O)) (plus (binary_to_unary n') (binary_to_unary n'))
+  end.
+
+Example test_binary_1 :
+  ((binary_to_unary (inc_bin_nat Zero)) = 1 + (binary_to_unary Zero)).
+Proof. simpl. reflexivity. Qed.
+
+Example test_binary_2 :
+  7 = binary_to_unary (DoublePlusOne(DoublePlusOne(DoublePlusOne(Zero)))).
+Proof.
+  simpl. reflexivity.
+Qed.
+
+Example test_binary_3 :
+  binary_to_unary (inc_bin_nat (inc_bin_nat (inc_bin_nat Zero))) = 3.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+Example test_binary_4 :
+  3 + binary_to_unary (inc_bin_nat Zero) = 2 + binary_to_unary (inc_bin_nat (inc_bin_nat Zero)).
+Proof.
+  simpl. reflexivity.
+Qed.
 (** [] *)
 
 (* ###################################################################### *)
