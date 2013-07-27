@@ -246,6 +246,9 @@ Proof.
   simpl. rewrite -> IHn'. reflexivity.
 Qed.
 
+(* This one was ridiculously hard until I realized that I could use
+   the two previous results. *)
+
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
@@ -381,11 +384,27 @@ Proof.
 (** Use [assert] to help prove this theorem.  You shouldn't need to
     use induction. *)
 
+(* I hope it's OK to use plus_assoc here, because I sure couldn't
+   figure out how to do it without that! *)
+
 Theorem plus_swap : forall n m p : nat, 
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
-
+  intros n m p.
+  assert (H1: n + (m + p) = (n + m) + p).
+    Case "Proof of H1".
+    rewrite -> plus_assoc. reflexivity.
+  assert (H2: m + (n + p) = (m + n) + p).
+    Case "Proof of H2".
+    rewrite -> plus_assoc. reflexivity.
+  rewrite -> H1.
+  rewrite -> H2.
+  assert (H3: n + m = m + n).
+    Case "Proof of H3".
+    rewrite -> plus_comm. reflexivity.
+  rewrite -> H3.
+  reflexivity.
+Qed.
 
 (** Now prove commutativity of multiplication.  (You will probably
     need to define and prove a separate subsidiary theorem to be used
