@@ -82,7 +82,8 @@ well.
       * loop_never_stops
       * no_whiles_terminating
       * stack_compiler
-      * stack_compiler_correct Hoare:
+      * stack_compiler_correct
+   * Hoare:
       * valid_triples
       * hoare_asgn_wrong
       * hoare_asgn_examples_2
