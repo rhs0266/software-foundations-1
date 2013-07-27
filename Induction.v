@@ -289,9 +289,12 @@ Proof.
 
 (** **** Exercise: 1 star (destruct_induction) *)
 (** Briefly explain the difference between the tactics
-    [destruct] and [induction].  
+    [destruct] and [induction].
 
-(* FILL IN HERE *)
+From what I can tell, the difference is that destruct breaks the
+problem up into subgoals but doesn't give you an induction hypothesis,
+whereas induction breaks the problem up into base and inductive cases,
+giving you an induction hypothesis in the second.
 
 *)
 (** [] *)
