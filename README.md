@@ -18,6 +18,7 @@ well.
       * ~~andb_eq_orb~~
       * ~~binary~~
       * ~~decreasing~~
+
   * Induction:
       * ~~basic_induction~~
       * ~~plus_comm~~
@@ -25,6 +26,7 @@ well.
       * evenb_n__oddb_Sn
       * binary_commute
       * binary_inverse 
+
   * Lists:
       * bag_functions
       * bag_theorem
@@ -32,11 +34,13 @@ well.
       * list_design
       * bag_count_sum
       * rev_injective 
+
   * Poly:
       * split
       * map_rev
       * fold_length
       * fold_map 
+
   * MoreCoq:
       * silly_ex
       * rev_exercise1
@@ -51,17 +55,20 @@ well.
       * beq_nat_trans
       * split_combine
       * override_permute 
+
   * Prop:
       * gorgeous_sum
       * beautiful__gorgeous
       * ev_ev__ev
       * palindromes 
+
   * MoreProp:
       * total_relation
       * empty_relation
       * R_provability
       * R_fact
       * combine_odd_even 
+
   * Logic:
       * True
       * contrapositive
@@ -71,9 +78,11 @@ well.
       * all_forallb
       * no_repeats
       * pigeonhole principle 
+
   * ProofObjects:
       * double_even_pfobj
       * trans_eq_example_redux 
+
   * Imp:
       * optimize_0plus_b
       * bevalR
