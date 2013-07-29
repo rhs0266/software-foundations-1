@@ -411,10 +411,61 @@ Qed.
     in the proof of this one.)  You may find that [plus_swap] comes in
     handy. *)
 
+Theorem S_both_sides : forall m n : nat,
+ m = n -> S m = S n.                         
+Proof.
+  intros m n.
+  intros H.
+  rewrite -> H.
+  reflexivity.
+Qed.
+  
+Theorem plus_elim : forall m n : nat,
+ n + n * m = n * S m.
+Proof.
+  intros m n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl. reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite <- IHn'.
+    apply S_both_sides.
+    rewrite -> plus_swap.
+    reflexivity.
+Qed.
+
+Theorem mult_m_Sn : forall m n : nat,
+  m * S n = m + n * m.
+Proof.
+  intros m n.
+  induction m as [| m'].
+  Case "m = 0".
+    simpl.
+    rewrite mult_0_r. reflexivity.
+  Case "m = S m'".
+    simpl.
+    rewrite -> IHm'.
+    rewrite -> plus_swap.
+    apply S_both_sides.
+    rewrite -> plus_elim.
+    reflexivity.
+Qed.
+
 Theorem mult_comm : forall m n : nat,
  m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros m n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl.
+    rewrite -> mult_0_r.
+    reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite -> mult_m_Sn.
+    reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_n__oddb_Sn) *)
