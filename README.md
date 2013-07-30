@@ -22,7 +22,7 @@ well.
       * ~~basic_induction~~
       * ~~plus_comm~~
       * ~~mult_comm~~
-      * evenb_n__oddb_Sn
+      * ~~evenb_n__oddb_Sn~~
       * binary_commute
       * binary_inverse 
    * Lists:
