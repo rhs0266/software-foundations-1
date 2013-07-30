@@ -411,15 +411,6 @@ Qed.
     in the proof of this one.)  You may find that [plus_swap] comes in
     handy. *)
 
-Theorem S_both_sides : forall m n : nat,
- m = n -> S m = S n.                         
-Proof.
-  intros m n.
-  intros H.
-  rewrite -> H.
-  reflexivity.
-Qed.
-  
 Theorem plus_elim : forall m n : nat,
  n + n * m = n * S m.
 Proof.
@@ -430,7 +421,6 @@ Proof.
   Case "n = S n'".
     simpl.
     rewrite <- IHn'.
-    apply S_both_sides.
     rewrite -> plus_swap.
     reflexivity.
 Qed.
@@ -447,7 +437,6 @@ Proof.
     simpl.
     rewrite -> IHm'.
     rewrite -> plus_swap.
-    apply S_both_sides.
     rewrite -> plus_elim.
     reflexivity.
 Qed.
