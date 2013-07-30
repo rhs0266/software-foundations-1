@@ -586,9 +586,57 @@ Proof.
     wanting to change your original definitions to make the property
     easier to prove, feel free to do so.) *)
 
-(* FILL IN HERE *)
+(* Copied over from Basics.v: *)
+
+Inductive bin_nat : Type :=
+  | Zero : bin_nat
+  | Double : bin_nat -> bin_nat
+  | DoublePlusOne : bin_nat -> bin_nat.
+
+Fixpoint inc_bin_nat (n : bin_nat) : bin_nat :=
+  match n with
+  | Zero => DoublePlusOne(Zero)
+  | Double(n') => DoublePlusOne(n')
+  | DoublePlusOne(n') => Double(inc_bin_nat n')
+  end.
+
+Fixpoint binary_to_unary (n : bin_nat) : nat :=
+  match n with
+  | Zero => O
+  | Double(n') => plus (binary_to_unary n') (binary_to_unary n') 
+  | DoublePlusOne(n') => plus (S(O)) (plus (binary_to_unary n') (binary_to_unary n'))
+  end.
+
+Theorem binary_commute : forall n : bin_nat,
+ binary_to_unary (inc_bin_nat n) = S (binary_to_unary n).
+Proof.
+  intros n.
+  induction n as [Z | D | DPO].
+  Case "n = Zero".
+    simpl. reflexivity.
+  Case "n = Double(n')".
+    simpl. reflexivity.
+  Case "n = DoublePlusOne(n')".
+    simpl.
+    rewrite -> IHDPO.
+    assert (H: forall x, S x + S x = S (S (x + x))).
+    SCase "Assertion".
+      intros x.
+      induction x as [| x'].
+      SSCase "x = 0".
+        simpl. reflexivity.
+      SSCase "x = S x'".
+        rewrite -> IHx'.
+        simpl.
+        rewrite -> plus_comm.
+        simpl.
+        reflexivity.
+    rewrite -> H.
+    reflexivity.
+Qed.
 (** [] *)
 
+(* That went pretty smoothly, actually. *)    
 
 (** **** Exercise: 5 stars, advanced (binary_inverse) *)
 (** This exercise is a continuation of the previous exercise about

@@ -23,7 +23,7 @@ well.
       * ~~plus_comm~~
       * ~~mult_comm~~
       * ~~evenb_n__oddb_Sn~~
-      * binary_commute
+      * ~~binary_commute~~
       * binary_inverse 
    * Lists:
       * bag_functions
