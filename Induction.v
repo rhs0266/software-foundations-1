@@ -663,6 +663,26 @@ Qed.
     here. 
 *)
 
+Fixpoint unary_to_binary (n : nat) : bin_nat :=
+  match n with
+  | O     => Zero
+  | S(n') => inc_bin_nat (unary_to_binary n')
+  end.
+
+Theorem convert_roundtrip : forall n : nat,
+ binary_to_unary (unary_to_binary n) = n.
+Proof.
+  intros n.
+  induction n as [| n'].
+  Case "n = 0".
+    simpl. reflexivity.
+  Case "n = S n'".
+    simpl.
+    rewrite -> binary_commute.
+    rewrite -> IHn'.
+    reflexivity.
+Qed.
+  
 (* FILL IN HERE *)
 (** [] *)
 
