@@ -698,27 +698,30 @@ Eval compute in four_repr1.
 
 Eval compute in four_repr2.
 
-(* Both eval to Double (Double (DoublePlusOne Zero)). *)
-
-(* So, "normalize" needs to ensure that there's a *unique* mapping
-from a normalized binary number to a unary number.  *)
-
-Fixpoint normalize (n : bin_nat ) : bin_nat :=
-  (* Fix me later. *)
+Fixpoint normalize (n : bin_nat) : bin_nat :=
   match n with
   | Zero => Zero
-  | Double(n') => Double(n')
-  | DoublePlusOne(n') => DoublePlusOne(n')
-  end.  
+  | Double(n') => match (normalize n') with
+                  | Zero => Zero
+                  | Double(n'') => Double(Double(n''))
+                  | DoublePlusOne(n'') => Double(DoublePlusOne(n''))
+                  end
+  | DoublePlusOne(n') => inc_bin_nat (unary_to_binary
+                                        (plus (binary_to_unary (normalize n'))
+                                              (binary_to_unary (normalize n'))))
+  end.
 
 Theorem normalize_normalizes : forall n : bin_nat,
  unary_to_binary (binary_to_unary n) = normalize n.
 Proof.
   intros n.
-  (* Won't go through yet, obvs. *)
+  induction n as [Z | D | DPO].
+  Case "n = Z".
+    simpl. reflexivity.
+  Case "n = D".
+    admit.
+  Case "n = DPO".
 Admitted.
-  
-(* FILL IN HERE *)
 (** [] *)
 
 (* ###################################################################### *)
