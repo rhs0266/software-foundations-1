@@ -711,6 +711,78 @@ Fixpoint normalize (n : bin_nat) : bin_nat :=
                                               (binary_to_unary (normalize n'))))
   end.
 
+Fixpoint plus_bin_nat (n : bin_nat) (m : bin_nat) : bin_nat :=
+  match n with
+    | Zero => m
+    | Double n' => unary_to_binary (binary_to_unary (plus_bin_nat n' m)
+                                    + (binary_to_unary n'))
+    | DoublePlusOne n' => inc_bin_nat (unary_to_binary
+                                         (binary_to_unary (plus_bin_nat n' m)
+                                       + (binary_to_unary n')))
+  end.
+
+Example plus_bin_nat_1 :
+  plus_bin_nat (unary_to_binary 3) (unary_to_binary 4) = 
+  unary_to_binary 7.
+Proof.
+  simpl. reflexivity.
+Qed.
+
+Example plus_bin_nat_2 :
+  plus_bin_nat (Double (unary_to_binary 3)) (Double (unary_to_binary 3)) =
+  Double (Double (unary_to_binary 3)).
+Proof.
+  simpl. reflexivity.
+Qed.
+
+Theorem normalize_helper : forall n : bin_nat,
+ binary_to_unary(unary_to_binary (binary_to_unary n + binary_to_unary n)) =
+ binary_to_unary(Double(unary_to_binary(binary_to_unary n))).
+Proof.
+  intros n.
+  induction n as [Z | D | DPO].
+  Case "n = Z".
+    simpl. reflexivity.
+  Case "n = D".    
+    simpl.
+    rewrite -> IHD.
+    rewrite -> convert_roundtrip.
+    simpl.
+    rewrite -> convert_roundtrip.
+    reflexivity.
+  Case "n = DPO".
+    simpl.
+    rewrite -> binary_commute.
+    rewrite -> binary_commute.
+    rewrite -> IHDPO.
+    rewrite -> convert_roundtrip.
+    simpl.
+    rewrite -> convert_roundtrip.
+    reflexivity.
+Qed.
+
+(* The above theorem is nice, but I think what I actually want is: *)
+Theorem normalize_helper2 : forall n : bin_nat,
+ unary_to_binary (binary_to_unary n + binary_to_unary n) =
+ normalize (Double (unary_to_binary (binary_to_unary n))).
+Proof.
+  intros n.
+Admitted.
+
+(* Something like this might be handy, too. *)
+Theorem unary_to_binary_distrib : forall m n : bin_nat,
+ unary_to_binary (binary_to_unary m + binary_to_unary n) =
+ plus_bin_nat (unary_to_binary (binary_to_unary m))
+              (unary_to_binary (binary_to_unary n)).
+Proof.
+  intros m n.
+  induction m as [Z | D | DPO].
+  Case "m = Z".
+    simpl. reflexivity.
+  Case "m = D".
+    simpl.
+Admitted.
+
 Theorem normalize_normalizes : forall n : bin_nat,
  unary_to_binary (binary_to_unary n) = normalize n.
 Proof.
